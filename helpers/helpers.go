@@ -1,12 +1,18 @@
 package helpers
 
 import (
+	"encoding/json"
+	"github.com/golang-jwt/jwt"
 	"github.com/tonnytg/lightbank/interfaces"
 	"golang.org/x/crypto/bcrypt"
 	_ "golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
+	"net/http"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 func HandleErr(err error) {
@@ -50,4 +56,34 @@ func Validation(values []interfaces.Validation) bool {
 		}
 	}
 	return true
+}
+
+func PanicHandler(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			error := recover()
+			if error != nil {
+				log.Println(error)
+				resp := interfaces.ErrResponse{Message: "Internal server error"}
+				json.NewEncoder(w).Encode(resp)
+			}
+		}()
+		next.ServeHTTP(w, r)
+	})
+}
+
+func ValidateToken(id, jwtToken string) bool {
+
+	cleanJWT := strings.Replace(jwtToken, "Baerer ", "", -1)
+	tokenData := jwt.MapClaims{}
+	token, err := jwt.ParseWithClaims(cleanJWT, tokenData, func(token *jwt.Token) (interface{}, error) {
+		return []byte("TokenPassword"), nil
+	})
+	HandleErr(err)
+	var userId, _ = strconv.ParseFloat(id, 8)
+	if token.Valid && tokenData["user_id"] == userId {
+		return true
+	} else {
+		return false
+	}
 }
