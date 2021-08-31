@@ -2,17 +2,16 @@ package helpers
 
 import (
 	"encoding/json"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/tonnytg/lightbank/interfaces"
-	"golang.org/x/crypto/bcrypt"
-	_ "golang.org/x/crypto/bcrypt"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/tonnytg/lightbank/interfaces"
+	"golang.org/x/crypto/bcrypt"
+	_ "golang.org/x/crypto/bcrypt"
 )
 
 func HandleErr(err error) {
@@ -26,13 +25,6 @@ func HashAndSalt(pass []byte) string {
 	HandleErr(err)
 
 	return string(hashed)
-}
-
-func ConnectDB() *gorm.DB {
-	dsn := "host=127.0.0.1 user=postgres password=postgres dbname=lightbank port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	HandleErr(err)
-	return db
 }
 
 func Validation(values []interfaces.Validation) bool {
@@ -74,7 +66,7 @@ func PanicHandler(next http.Handler) http.Handler {
 
 func ValidateToken(id, jwtToken string) bool {
 
-	cleanJWT := strings.Replace(jwtToken, "Baerer ", "", -1)
+	cleanJWT := strings.Replace(jwtToken, "Bearer ", "", -1)
 	tokenData := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(cleanJWT, tokenData, func(token *jwt.Token) (interface{}, error) {
 		return []byte("TokenPassword"), nil

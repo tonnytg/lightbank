@@ -1,10 +1,12 @@
 package users
 
 import (
+	"time"
+
+	"github.com/tonnytg/lightbank/database"
 	"github.com/tonnytg/lightbank/helpers"
 	"github.com/tonnytg/lightbank/interfaces"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -52,9 +54,8 @@ func Login(username string, pass string) map[string]interface{} {
 			{Value: pass, Valid: "password"},
 		})
 	if valid {
-		db := helpers.ConnectDB()
 		user := &interfaces.User{}
-		if err := db.Where("username = ? ", username).First(&user).Error; err != nil {
+		if err := database.DB.Where("username = ? ", username).First(&user).Error; err != nil {
 			return map[string]interface{}{"message": "User not found"}
 		}
 
@@ -67,7 +68,7 @@ func Login(username string, pass string) map[string]interface{} {
 
 		// Find account for the username
 		var accounts []interfaces.ResponseAccount
-		db.Table("account").Select("id, name, balance").Where("user_id = ?", user.ID).Scan(&accounts)
+		database.DB.Table("accounts").Select("id, name, balance").Where("user_id = ?", user.ID).Scan(&accounts)
 
 		var response = prepareResponse(user, accounts, true)
 
@@ -86,13 +87,12 @@ func Register(username string, email string, pass string) map[string]interface{}
 			{Value: pass, Valid: "password"},
 		})
 	if valid {
-		db := helpers.ConnectDB()
 		generatedPassword := helpers.HashAndSalt([]byte(pass))
 		user := &interfaces.User{Username: username, Email: email, Password: generatedPassword}
-		db.Create(&user)
+		database.DB.Create(&user)
 
 		account := &interfaces.Account{Type: "Daily Account", Name: string(username + "'s" + " account"), Balance: 0, UserID: user.ID}
-		db.Create(&account)
+		database.DB.Create(&account)
 
 		accounts := []interfaces.ResponseAccount{}
 		respAccount := interfaces.ResponseAccount{ID: account.ID, Name: account.Name, Balance: int(account.Balance)}
@@ -109,16 +109,15 @@ func GetUser(id string, jwt string) map[string]interface{} {
 	isValid := helpers.ValidateToken(id, jwt)
 	// Find and return user
 	if isValid {
-		db := helpers.ConnectDB()
 		user := &interfaces.User{}
-		if err := db.Where("id = ? ", id).First(&user).Error; err != nil {
+		if err := database.DB.Where("id = ? ", id).First(&user).Error; err != nil {
 			return map[string]interface{}{"message": "User not found"}
 		}
 
 		accounts := []interfaces.ResponseAccount{}
-		db.Table("accounts").Select("id, name, balance").Where("user_id = ? ", user.ID).Scan(&accounts)
+		database.DB.Table("accounts").Select("id, name, balance").Where("user_id = ? ", user.ID).Scan(&accounts)
 
-		var response = prepareResponse(user, accounts, false);
+		var response = prepareResponse(user, accounts, false)
 		return response
 	} else {
 		return map[string]interface{}{"message": "Not valid token"}
