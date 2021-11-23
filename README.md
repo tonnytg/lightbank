@@ -63,5 +63,5 @@ Get jwt to authenticated user:
       curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnkiOjE2Mzc1MjIwMzIsInVzZXJfaWQiOjd9.BWXKC0PqpyRcIO0C0aDAkYttqgSD6oIBfdFpiLO_pR0" http://localhost:8888/accounts/1
 
 - Transaction:
-
-    curl -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnkiOjE2Mzc1MjIwMzIsInVzZXJfaWQiOjd9.BWXKC0PqpyRcIO0C0aDAkYttqgSD6oIBfdFpiLO_pR0" -H "Content-Type: application/json" -d '{"UserID": 1,"From":1,"To":2,"amount":10}' http://localhost:8888/transaction
+  
+      curl -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnkiOjE2Mzc1MjIwMzIsInVzZXJfaWQiOjd9.BWXKC0PqpyRcIO0C0aDAkYttqgSD6oIBfdFpiLO_pR0" -H "Content-Type: application/json" -d '{"UserID": 1,"From":1,"To":2,"amount":10}' http://localhost:8888/transaction
