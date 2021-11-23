@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/tonnytg/lightbank/interfaces"
 	"golang.org/x/crypto/bcrypt"
@@ -11,7 +10,6 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -32,15 +30,7 @@ func HashAndSalt(pass []byte) string {
 
 func ConnectDB() *gorm.DB {
 
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbname := os.Getenv("DB_NAME")
-	sslmode := os.Getenv("DB_SSLMODE")
-
-	dsn := fmt.Sprintf("host=%s port=%v user=%s password=%s dbname=%s  sslmode=%s",
-		host, port, user, password, dbname, sslmode)
+	dsn := "host=127.0.0.1 user=postgres password=postgres dbname=lightbank port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	HandleErr(err)
 	return db

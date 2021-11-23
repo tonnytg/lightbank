@@ -15,9 +15,9 @@ func InitDatabase() {
 	DB = database
 }
 
-// func ConnectDB() *gorm.DB {
-// 	dsn := "host=127.0.0.1 user=postgres password=postgres dbname=lightbank port=5432 sslmode=disable"
-// 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-// 	HandleErr(err)
-// 	return db
-// }
+//func ConnectDB() *gorm.DB {
+//	dsn := "host=127.0.0.1 user=postgres password=postgres dbname=lightbank port=5432 sslmode=disable"
+//	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+//	helpers.HandleErr(err)
+//	return db
+//}

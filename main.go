@@ -1,10 +1,15 @@
-package main
+ package main
 
 import (
 	"github.com/tonnytg/lightbank/api"
+	"github.com/tonnytg/lightbank/database"
 	"github.com/tonnytg/lightbank/migrations"
 	"os"
 )
+
+func init() {
+	database.InitDatabase()
+}
 
 func main() {
 
