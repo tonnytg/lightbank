@@ -6,6 +6,11 @@ import (
 	"github.com/tonnytg/lightbank/interfaces"
 )
 
+const (
+	REJECTED = "rejected"
+	APPROVED = "approved"
+)
+
 func CreateTransaction(From, To uint, Amount int) {
 	transaction := &interfaces.Transaction{From: From, To: To, Amount: Amount}
 	database.DB.Create(transaction)
