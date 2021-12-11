@@ -3,13 +3,13 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/tonnytg/lightbank/domain/entity/transactions"
 	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/tonnytg/lightbank/helpers"
-	"github.com/tonnytg/lightbank/transactions"
 	"github.com/tonnytg/lightbank/useraccounts"
 	"github.com/tonnytg/lightbank/users"
 )

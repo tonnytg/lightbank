@@ -2,11 +2,11 @@ package useraccounts
 
 import (
 	"fmt"
+	"github.com/tonnytg/lightbank/domain/entity/transactions"
 
 	"github.com/tonnytg/lightbank/database"
 	"github.com/tonnytg/lightbank/helpers"
 	"github.com/tonnytg/lightbank/interfaces"
-	"github.com/tonnytg/lightbank/transactions"
 )
 
 func updateAccount(id uint, amount int) interfaces.ResponseAccount {
