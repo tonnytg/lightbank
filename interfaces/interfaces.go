@@ -39,7 +39,7 @@ type ErrResponse struct {
 	Message string
 }
 
-type Transaction struct {
+type SimpleTransaction struct {
 	gorm.Model
 	From   uint
 	To     uint
