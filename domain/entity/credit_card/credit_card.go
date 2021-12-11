@@ -1,4 +1,4 @@
-package entity
+package creditcard
 
 import (
 	"errors"
@@ -7,12 +7,12 @@ import (
 
 type CreditCard struct {
 	Number      string
-	Cvv         int64
-	ExpiryMonth int64
-	ExpiryYear  int64
+	Cvv         int
+	ExpiryMonth int
+	ExpiryYear  int
 }
 
-func NewCreditCard(code, name string, month, year, cvv int64) (CreditCard, error) {
+func NewCreditCard(code string, name string, month int, year int, cvv int) (*CreditCard, error) {
 	cc := CreditCard{}
 	cc.Number = code
 	cc.ExpiryMonth = month
@@ -21,20 +21,20 @@ func NewCreditCard(code, name string, month, year, cvv int64) (CreditCard, error
 
 	err := cc.CheckNumber()
 	if err != nil {
-		return cc, err
+		return &cc, err
 	}
 
 	err = cc.CheckCvv()
 	if err != nil {
-		return cc, err
+		return &cc, err
 	}
 
 	err = cc.CheckExpiry()
 	if err != nil {
-		return cc, err
+		return &cc, err
 	}
 
-	return cc, nil
+	return &cc, nil
 }
 
 func (c *CreditCard) CheckNumber() error {
