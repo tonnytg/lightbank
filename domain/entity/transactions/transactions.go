@@ -28,7 +28,7 @@ func NewTransaction() *Transaction {
 
 func (t *Transaction) IsValid() error {
 	if t.Amount > 1000 {
-		return errors.New("Amount cannot be greater than 1000")
+		return errors.New("you dont have limit for this transaction")
 	}
 	return nil
 }
@@ -38,13 +38,13 @@ func (t *Transaction) SetCreditCard(cc creditcard.CreditCard) {
 }
 
 func CreateTransaction(From, To uint, Amount int) {
-	transaction := &interfaces.Transaction{From: From, To: To, Amount: Amount}
+	transaction := &interfaces.SimpleTransaction{From: From, To: To, Amount: Amount}
 	database.DB.Create(transaction)
 }
 
 func GetTransactionsByAccount(id uint) []interfaces.ResponseTransaction {
 	transactions := []interfaces.ResponseTransaction{}
-	database.DB.Table("transactions").Select("id, transactions.from, transactions.to, amount").Where(interfaces.Transaction{From: id}).Or(interfaces.Transaction{To: id}).Scan(&transactions)
+	database.DB.Table("transactions").Select("id, transactions.from, transactions.to, amount").Where(interfaces.SimpleTransaction{From: id}).Or(interfaces.SimpleTransaction{To: id}).Scan(&transactions)
 	return transactions
 }
 
