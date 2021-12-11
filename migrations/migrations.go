@@ -31,7 +31,7 @@ func CreateUserAccounts() {
 func Migrate() {
 	User := &interfaces.User{}
 	Account := &interfaces.Account{}
-	Transactions := &interfaces.Transaction{}
+	Transactions := &interfaces.SimpleTransaction{}
 	database.DB.AutoMigrate(&User, &Account, &Transactions)
 
 	createAccounts()
