@@ -1,7 +1,9 @@
 package transactions
 
 import (
+	"errors"
 	"github.com/tonnytg/lightbank/database"
+	creditcard "github.com/tonnytg/lightbank/domain/entity/credit_card"
 	"github.com/tonnytg/lightbank/helpers"
 	"github.com/tonnytg/lightbank/interfaces"
 )
@@ -10,6 +12,30 @@ const (
 	REJECTED = "rejected"
 	APPROVED = "approved"
 )
+
+type Transaction struct {
+	ID           string
+	AccountID    string
+	Amount       float64
+	CreditCard   creditcard.CreditCard
+	Status       string
+	ErrorMessage string
+}
+
+func NewTransaction() *Transaction {
+	return &Transaction{}
+}
+
+func (t *Transaction) IsValid() error {
+	if t.Amount > 1000 {
+		return errors.New("Amount cannot be greater than 1000")
+	}
+	return nil
+}
+
+func (t *Transaction) SetCreditCard(cc creditcard.CreditCard) {
+	t.CreditCard = cc
+}
 
 func CreateTransaction(From, To uint, Amount int) {
 	transaction := &interfaces.Transaction{From: From, To: To, Amount: Amount}
