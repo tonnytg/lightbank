@@ -9,7 +9,7 @@ require (
 	github.com/gorilla/mux v1.7.3
 	github.com/maragudk/migrate v0.4.1
 	github.com/mattn/go-sqlite3 v1.14.7
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
+	golang.org/x/crypto v0.1.0
 	gorm.io/driver/postgres v1.1.0
 	gorm.io/gorm v1.21.13
 )
